@@ -1,0 +1,90 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="row">
+    <h1 class="text-center">Edit Campground</h1>
+    <div class="col-6 offset-3">
+        <form class="needs-validation" action="/campgrounds/<%= camp._id %>?_method=PUT" method="POST" novalidate>
+            <div class="mb-2">
+                <label class="form-label" for="title">Title</label>
+                <input class="form-control" value="<%= camp.title %> " type="text" name="title" id="title" required>
+                <div class="invalid-feedback">
+                    Title is missing!
+                </div>
+                <div class="valid-feedback">
+                    Looks Good!
+                </div>
+            </div>
+            <div class="mb-2">
+                <label class="form-label" for="location">Location</label>
+                <input class="form-control" value="<%= camp.location  %> " type="text" name="location"
+                        id="location" required>
+                <div class="invalid-feedback">
+                    Location is required!
+                </div>
+                <div class="valid-feedback">
+                    Looks Good!
+                </div>
+            </div>
+            <div class="mb-2">
+                <label for="price">Price</label>
+            </div>
+            <div class="mb-2">
+                <div class="input-group">
+                    <div class="input-group-text">$</div>
+                    <input type="number" min="0" step="any" value="<%= camp.price %>" name="price" class="form-control" id="price" required>
+                    <div class="invalid-feedback">
+                        Price is missing or is less than 0!
+                    </div>
+                    <div class="valid-feedback">
+                        Looks Good!
+                    </div>
+                </div>
+            </div>
+            <div class="mb-2">
+                <label class="form-label" for="image">Image URL</label>
+                <input class="form-control" value="<%= camp.image%> " type="text" name="image" id="image" required>
+                <div class="invalid-feedback">
+                    Image URL is required!
+                </div>
+                <div class="valid-feedback">
+                    Looks Good!
+                </div>
+            </div>
+            <div class="mb-2">
+                <label class="form-label" for="description">Description</label>
+                <textarea class="form-control" type="text" name="description" id="description" required>
+                        <%= camp.description %> 
+                </textarea>
+                <div class="invalid-feedback">
+                    Description is required!
+                </div>
+                <div class="valid-feedback">
+                    Looks Good!
+                </div>
+            </div>
+            <button class="btn btn-success" style="margin-top: 1rem;" type="submit">Make it so</button>
+        </form>
+        <a href="/campgrounds/<%= camp._id %> " class="btn btn-primary" style="margin-top: 1rem;" type="submit">Go back🔙</a>
+    </div>
+</div>
+
+<script>
+    (function () {
+      'use strict'
+      // Fetch all the forms we want to apply custom Bootstrap validation styles to
+      var forms = document.querySelectorAll('.needs-validation')
+    
+      // Loop over them and prevent submission
+      Array.prototype.slice.call(forms)
+        .forEach(function (form) {
+          form.addEventListener('submit', function (event) {
+            if (!form.checkValidity()) {
+              event.preventDefault()
+              event.stopPropagation()
+            }
+    
+            form.classList.add('was-validated')
+          }, false)
+        })
+    })()
+</script>
