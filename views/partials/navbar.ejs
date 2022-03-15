@@ -16,6 +16,18 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/campgrounds/new">New Campground</a>
                 </li>
+                <% if(!currentUser) {%> 
+                    <li class="nav-item">
+                        <a class="btn btn-outline-success nav-link mx-3" href="/register">Register</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-outline-success" href="/login">Login</a>
+                    </li>
+                <% } else { %>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link btn btn-outline-danger" href="/logout">Logout</a>
+                    </li>
+                <% } %>
             </ul>
         </div>
     </div>

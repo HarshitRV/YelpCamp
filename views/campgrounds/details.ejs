@@ -1,8 +1,8 @@
 <% layout('layouts/boilerplate') %> 
 
 <div class="row">
-    <div class="col-6 offset-3">
-        <div class="card my-2">
+    <div class="col-md-6">
+        <div class="card my-2 shadow-lg p-3 mb-5 bg-white rounded">
             <img class="card-img-top" src="<%= camp.image %> " alt="Card image cap">
             <div class="card-body">
                 <h5 class="card-title"><%= camp.title %></h5>
@@ -19,5 +19,51 @@
                 </form>
             </div>
         </div>
+
+    </div>
+    <div class="col-md-6">
+        <div class="shadow p-3 mb-5 bg-white rounded">
+            <h3>Leave a review 💬</h3>
+            <form class="needs-validation" action="/campgrounds/<%= camp._id %>/reviews" method="post" novalidate>
+                <div>
+                    <label class="form-label" for="rating">Rating ⭐️</label>
+                    <input class="form-range" min="1" max="5" type="range" name="review[rating]" id="rating">
+                </div>
+                <div>
+                    <label class="form-label" for="review">Review 😎</label>
+                    <textarea class="form-control" name="review[body]" id="review" cols="30" rows="3" required></textarea>
+                    <div class="invalid-feedback">
+                        Can't leave blank!!!
+                    </div>
+                    <div class="valid-feedback">
+                        Looks Good!
+                    </div>
+                </div>
+                <div class="my-3">
+                    <button class="btn btn-success" type="submit">Done</button>
+                </div>
+            </form>
+        </div>
+        <h3>Reviews ⭐️</h3>
+        <div>
+                <%  if (camp.reviews.length){ %> 
+                    <% for (let review of camp.reviews){ %> 
+                        <div class="card my-3 shadow p-3 mb-5 bg-white rounded">
+                            <div class="card-body">
+                                <p><%= "⭐️".repeat(Number(review.rating)) %></p>
+                                <p><%= review.body %></p>
+                            </div>
+                            <div class="card-body">
+                                <form action="/camgrounds/<%= camp._id %>/reviews/<%= review._id %>?_method=DELETE" method="post">
+                                    <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                    <%  } %>
+                <% } else {  %>
+                    <p>No reviews yet</p>
+               <% } %> 
+        </div>
+    
     </div>
 </div>
