@@ -75,6 +75,7 @@ router
   );
 
 router.route("/:id/edit").get(
+  isLoggedIn,
   catchAsync(async (req, res, next) => {
     const camp = await Campground.findById(req.params.id);
     if (!camp) {
