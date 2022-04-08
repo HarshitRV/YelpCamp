@@ -75,14 +75,13 @@ router
   );
 
 router.route("/:id/edit").get(
- 
   catchAsync(async (req, res, next) => {
     const camp = await Campground.findById(req.params.id);
     if (!camp) {
       req.flash("error", "Campground doesn't exists.")
       return res.redirect('/campgrounds');
     }
-    res.render("campgrounds/edit", { camp });
+    return res.render("campgrounds/edit", { camp });
   })
 );
 

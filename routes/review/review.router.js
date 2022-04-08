@@ -23,11 +23,12 @@ router.route("/")
 
 ///campgrounds/:id/reviews
 router.route("/:reviewId")
-  .delete(isLoggedIn, catchAsync(async (req, res) => {
+  .delete(catchAsync(async (req, res) => {
+    console.log("Inside delete");
     const {
-      campId,
+      id: campId,
       reviewId
-    } = req.params
+    } = req.params;
     // console.log(campId, reviewId);
 
     // remove the review id from reviews array from the camp with given campId
@@ -38,8 +39,8 @@ router.route("/:reviewId")
       }
     })
     await Review.findByIdAndDelete(reviewId);
-
-    res.redirect(`/campgrounds/${campId}`);
+    console.log(campId);
+    return res.redirect(`/campgrounds/${campId}`);
   }));
 
 module.exports = router;

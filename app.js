@@ -55,7 +55,7 @@ app.use(flash())
 app.use(morgan("dev"));
 
 /**
- * app.session should be before
+ * app.session should be used before
  * passport.session.
  */
 app.use(passport.initialize());

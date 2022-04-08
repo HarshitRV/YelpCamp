@@ -54,7 +54,7 @@
                                 <p><%= review.body %></p>
                             </div>
                             <div class="card-body">
-                                <form action="/camgrounds/<%= camp._id %>/reviews/<%= review._id %>?_method=DELETE" method="post">
+                                <form action="/campgrounds/<%= camp._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
                                     <button class="btn btn-sm btn-danger" type="submit">Delete</button>
                                 </form>
                             </div>
