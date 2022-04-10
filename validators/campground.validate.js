@@ -1,6 +1,8 @@
-// * Function to check data validation.
-const { campgroundSchema } = require("../../schemas");
-const AppError = require("../../utils/AppError")
+/**
+ * Validation for creating new campground.
+ */
+const { campgroundSchema } = require("./schemas");
+const AppError = require("../utils/AppError")
 const  validateCampground = (req, res, next) => {
 
     const { error  } = campgroundSchema.validate(req.body);

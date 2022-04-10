@@ -1,11 +1,24 @@
+/**
+ * Module imports.
+ */
 const express = require("express");
+
+/**
+ * Router imports.
+ */
 const router = express.Router({
   mergeParams: true
 });
+
+/**
+ * Util imports.
+ */
 const catchAsync = require("../../utils/catchAsync");
-const validateReview = require("./review.auth");
-const Campground = require("../../models/campground");
-const Review = require("../../models/review");
+
+/**
+ * Validators imports.
+ */
+const validateReview = require("../../validators/review.validate");
 
 /**
  * Middlewares
@@ -13,41 +26,19 @@ const Review = require("../../models/review");
 const isLoggedIn = require("../../middlewares/isLoggedIn");
 const isReviewAuthor = require("../../middlewares/isReviewAuthor");
 
+/**
+ * Controller imports.
+ */
+const {
+  addReview,
+  deleteReview
+} = require("../../controller/review/review.contoller")
+
 router.route("/")
-  .post(isLoggedIn, validateReview, catchAsync(async (req, res) => {
-    const campground = await Campground.findById(req.params.id);
-
-    const newReview = new Review(req.body.review);
-    // Associating review with the review author.
-    newReview.author = req.user._id;
-
-    campground.reviews.push(newReview);
-
-    await newReview.save();
-    await campground.save();
-    req.flash("success", "Review added. Thanks for you valuable contribution.");
-    res.redirect(`/campgrounds/${campground._id}`);
-  }))
+  .post(isLoggedIn, validateReview, catchAsync(addReview))
 
 ///campgrounds/:id/reviews
 router.route("/:reviewId")
-  .delete(isLoggedIn, isReviewAuthor, catchAsync(async (req, res) => {
-    const {
-      id: campId,
-      reviewId
-    } = req.params;
-    // console.log(campId, reviewId);
-
-    // remove the review id from reviews array from the camp with given campId
-    // basically update the reviews array in camp with the remaining actual reviews
-    await Campground.findByIdAndUpdate(campId, {
-      $pull: {
-        reviews: reviewId
-      }
-    })
-    await Review.findByIdAndDelete(reviewId);
-   
-    return res.redirect(`/campgrounds/${campId}`);
-  }));
+  .delete(isLoggedIn, isReviewAuthor, catchAsync(deleteReview));
 
 module.exports = router;

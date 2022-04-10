@@ -1,4 +1,5 @@
-const { reviewSchema } = require('../../schemas')
+const { reviewSchema } = require('./schemas');
+const AppError = require("../utils/AppError");
 
 const validateReview = (req, res, next) => {
     const { error  } = reviewSchema.validate(req.body);
