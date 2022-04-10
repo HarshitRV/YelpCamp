@@ -55,12 +55,15 @@
                             <div class="card-body">
                                 <p><%= "⭐️".repeat(Number(review.rating)) %></p>
                                 <p><%= review.body %></p>
+                                <p><i> -- <%= review.author.username %></i></p>
                             </div>
-                            <div class="card-body">
-                                <form action="/campgrounds/<%= camp._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
-                                    <button class="btn btn-sm btn-danger" type="submit">Delete</button>
-                                </form>
-                            </div>
+                            <% if(currentUser && review.author._id.equals(currentUser._id)) {%> 
+                                <div class="card-body">
+                                    <form action="/campgrounds/<%= camp._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
+                                        <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+                                    </form>
+                                </div>
+                            <% } %> 
                         </div>
                     <%  } %>
                 <% } else {  %>

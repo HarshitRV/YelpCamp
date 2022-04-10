@@ -2,11 +2,16 @@ const express = require("express");
 const router = express.Router({
   mergeParams: true
 });
-const catchAsync = require("../../utils/catchAsync")
-const validateReview = require("./review.auth")
-const Campground = require("../../models/campground")
-const Review = require("../../models/review")
-const isLoggedIn = require("../../middlewares/isLoggedIn")
+const catchAsync = require("../../utils/catchAsync");
+const validateReview = require("./review.auth");
+const Campground = require("../../models/campground");
+const Review = require("../../models/review");
+
+/**
+ * Middlewares
+ */
+const isLoggedIn = require("../../middlewares/isLoggedIn");
+const isReviewAuthor = require("../../middlewares/isReviewAuthor");
 
 router.route("/")
   .post(isLoggedIn, validateReview, catchAsync(async (req, res) => {
@@ -26,7 +31,7 @@ router.route("/")
 
 ///campgrounds/:id/reviews
 router.route("/:reviewId")
-  .delete(catchAsync(async (req, res) => {
+  .delete(isLoggedIn, isReviewAuthor, catchAsync(async (req, res) => {
     const {
       id: campId,
       reviewId

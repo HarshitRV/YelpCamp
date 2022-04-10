@@ -11,7 +11,9 @@ router
   .get(
     catchAsync(async (req, res) => {
       const camps = await Campground.find({});
-      res.render("campgrounds/index", { camps });
+      res.render("campgrounds/index", {
+        camps
+      });
     })
   )
   .post(
@@ -31,7 +33,7 @@ router
     })
   );
 
-router.route("/new").get(isLoggedIn,(req, res) => {
+router.route("/new").get(isLoggedIn, (req, res) => {
   res.render("campgrounds/new");
 });
 
@@ -39,15 +41,21 @@ router
   .route("/:id")
   .get(
     catchAsync(async (req, res, next) => {
-      const { id } = req.params;
-      const camp = await Campground.findById(id).populate("reviews").populate("author");
-     
+      const {
+        id
+      } = req.params;
+      const camp = await Campground.findById(id)
+        .populate({path: "reviews" , populate: { path: "author" } }) // nested population
+        .populate("author");
+      // console.log(camp);
       if (!camp) {
         req.flash("error", "No campground exists with that id.")
         return res.redirect('/campgrounds');
       }
 
-      res.render("campgrounds/details", { camp });
+      res.render("campgrounds/details", {
+        camp
+      });
     })
   )
   .put(
@@ -58,8 +66,7 @@ router
 
       await Campground.findByIdAndUpdate(
         req.params.id,
-        req.body.campground,
-        {
+        req.body.campground, {
           new: true,
           runValidators: true,
         }
@@ -89,7 +96,9 @@ router.route("/:id/edit").get(
       req.flash("error", "Campground doesn't exists.")
       return res.redirect('/campgrounds');
     }
-    return res.render("campgrounds/edit", { camp });
+    return res.render("campgrounds/edit", {
+      camp
+    });
   })
 );
 

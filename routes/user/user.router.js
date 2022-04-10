@@ -34,7 +34,13 @@ router.route("/login")
         res.render("users/login")
     })
     .post(passport.authenticate('local', { failureFlash: true, failureRedirect: '/login' }), (req, res)=>{
-        const redirectTo = req.session.redirectTo || '/campgrounds';
+        let redirectTo = req.session.redirectTo || '/campgrounds';
+        // console.log(redirectTo);
+        // Since the /reviews do not have get.
+        if(redirectTo.includes("/reviews")){
+            redirectTo = redirectTo.slice(0, -8)
+        }
+        
         req.flash("success", "Welcome back 🎉");
         delete req.session.redirectTo;
         res.redirect(redirectTo);
