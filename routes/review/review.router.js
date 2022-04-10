@@ -13,6 +13,9 @@ router.route("/")
     const campground = await Campground.findById(req.params.id);
 
     const newReview = new Review(req.body.review);
+    // Associating review with the review author.
+    newReview.author = req.user._id;
+
     campground.reviews.push(newReview);
 
     await newReview.save();
@@ -24,7 +27,6 @@ router.route("/")
 ///campgrounds/:id/reviews
 router.route("/:reviewId")
   .delete(catchAsync(async (req, res) => {
-    console.log("Inside delete");
     const {
       id: campId,
       reviewId
@@ -39,7 +41,7 @@ router.route("/:reviewId")
       }
     })
     await Review.findByIdAndDelete(reviewId);
-    console.log(campId);
+   
     return res.redirect(`/campgrounds/${campId}`);
   }));
 

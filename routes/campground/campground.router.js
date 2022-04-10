@@ -4,6 +4,7 @@ const catchAsync = require("../../utils/catchAsync");
 const Campground = require("../../models/campground");
 const validateCampground = require("./campground.auth");
 const isLoggedIn = require("../../middlewares/isLoggedIn")
+const isAuthor = require("../../middlewares/isAuthor");
 
 router
   .route("/")
@@ -19,6 +20,9 @@ router
     catchAsync(async (req, res) => {
 
       const newCamp = new Campground(req.body.campground);
+
+      // Associating the author with the campground.
+      newCamp.author = req.user._id;
 
       const savedCamp = await newCamp.save();
       req.flash("success", "Added a new campground.")
@@ -36,8 +40,8 @@ router
   .get(
     catchAsync(async (req, res, next) => {
       const { id } = req.params;
-      const camp = await Campground.findById(id).populate("reviews");
-
+      const camp = await Campground.findById(id).populate("reviews").populate("author");
+     
       if (!camp) {
         req.flash("error", "No campground exists with that id.")
         return res.redirect('/campgrounds');
@@ -48,6 +52,7 @@ router
   )
   .put(
     isLoggedIn,
+    isAuthor,
     validateCampground,
     catchAsync(async (req, res, next) => {
 
@@ -67,6 +72,7 @@ router
   )
   .delete(
     isLoggedIn,
+    isAuthor,
     catchAsync(async (req, res) => {
       await Campground.findByIdAndDelete(req.params.id);
       req.flash("success", "Successfully deleted the campground.")
@@ -76,6 +82,7 @@ router
 
 router.route("/:id/edit").get(
   isLoggedIn,
+  isAuthor,
   catchAsync(async (req, res, next) => {
     const camp = await Campground.findById(req.params.id);
     if (!camp) {
