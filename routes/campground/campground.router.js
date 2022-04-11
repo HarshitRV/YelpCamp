@@ -3,16 +3,14 @@
  */
 const express = require("express");
 const router = express.Router();
+const multer  = require('multer')
+const { storage } = require("../../utils/cloudinaryUpload");
+const upload = multer({ storage })
 
 /**
  * Util imports.
  */
 const catchAsync = require("../../utils/catchAsync");
-
-/**
- * Model imports.
- */
-const Campground = require("../../models/campground");
 
 /**
  * Validator imports
@@ -45,6 +43,7 @@ router
   )
   .post(
     isLoggedIn,
+    upload.array('image', 3),
     validateCampground,
     catchAsync(addNewCampground)
   );

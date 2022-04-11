@@ -1,9 +1,28 @@
 <% layout('layouts/boilerplate') %> 
+<link rel="stylesheet" href="/styles/stars.css">
 
 <div class="row">
     <div class="col-md-6">
         <div class="card my-2 shadow-lg p-3 mb-5 bg-white rounded">
-            <img class="card-img-top" src="<%= camp.image %> " alt="Card image cap">
+            <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                
+                <% camp.images.forEach((image, index) => { %> 
+                    <div class="carousel-item <%= index === 0 ? 'active': '' %> ">
+                        <img src="<%= image.url %> " class="d-block w-100" alt="...">
+                    </div>
+                <% }) %> 
+                    
+                <% if(camp.images.length >= 2) {%> 
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                <% } %> 
+            </div>
             <div class="card-body">
                 <h5 class="card-title"><%= camp.title %></h5>
                 <h6 class="card-subtitle mb-2 text-muted"><%= camp.location %> </h6>
@@ -30,6 +49,7 @@
             <form class="needs-validation" action="/campgrounds/<%= camp._id %>/reviews" method="post" novalidate>
                 <div>
                     <label class="form-label" for="rating">Rating ⭐️</label>
+                    
                     <input class="form-range" min="1" max="5" type="range" name="review[rating]" id="rating">
                 </div>
                 <div>
@@ -47,13 +67,15 @@
                 </div>
             </form>
         </div>
-        <h3>Reviews ⭐️</h3>
+        <h3>Reviews &#9733; </h3>
         <div>
                 <%  if (camp.reviews.length){ %> 
                     <% for (let review of camp.reviews){ %> 
                         <div class="card my-3 shadow p-3 mb-5 bg-white rounded">
                             <div class="card-body">
-                                <p><%= "⭐️".repeat(Number(review.rating)) %></p>
+                                <p class="starability-result" data-rating="<%= review.rating %>" >
+                                    Rated: <%= review.rating %> stars
+                                </p>
                                 <p><%= review.body %></p>
                                 <p><i> -- <%= review.author.username %></i></p>
                             </div>

@@ -17,13 +17,17 @@ module.exports.getAllCampgrounds = async (req, res) => {
  * Post new campground
  */
 module.exports.addNewCampground = async (req, res) => {
+  console.log(req.body)
+  console.log(req.files);
 
   const newCamp = new Campground(req.body.campground);
 
+  newCamp.images = req.files.map(image => ({ url: image.path, fileName: image.filename }));
   // Associating the author with the campground.
   newCamp.author = req.user._id;
 
   const savedCamp = await newCamp.save();
+  // console.log(savedCamp)
   req.flash("success", "Added a new campground.")
 
   res.redirect(`/campgrounds/${savedCamp._id}`);

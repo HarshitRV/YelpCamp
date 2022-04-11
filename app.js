@@ -1,7 +1,7 @@
 /**
  * Imports
  */
-require('dotenv').config();
+process.env.NODE_ENV !== "production" && require('dotenv').config();
 const express = require("express");
 const methodOverride = require("method-override");
 const path = require("path");
@@ -17,7 +17,7 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 
 /**
- * My Imports
+ * Utils imports.
  */
 const AppError = require("./utils/AppError");
 const { sessionConfig } = require('./configs/config');
