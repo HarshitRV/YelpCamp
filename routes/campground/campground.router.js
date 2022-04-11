@@ -43,7 +43,7 @@ router
   )
   .post(
     isLoggedIn,
-    upload.array('image', 3),
+    upload.array('image', 2),
     validateCampground,
     catchAsync(addNewCampground)
   );
@@ -58,6 +58,7 @@ router
   .put(
     isLoggedIn,
     isAuthor,
+    upload.array('image', 2),
     validateCampground,
     catchAsync(updateOneCampground)
   )

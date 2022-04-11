@@ -2,6 +2,7 @@
  * Model imports
  */
 const Campground = require("../../models/campground");
+const { cloudinary } = require("../../utils/cloudinaryUpload");
 
 /**
  * Get all campgrounds
@@ -64,13 +65,23 @@ module.exports.getOneCampground = async (req, res) => {
  */
 module.exports.updateOneCampground = async (req, res, next) => {
 
-  await Campground.findByIdAndUpdate(
-    req.params.id,
-    req.body.campground, {
-      new: true,
-      runValidators: true,
-    }
-  );
+  // console.log(req.body);
+  const camp = await Campground.findByIdAndUpdate(req.params.id,{ ...req.body.campground });
+  const images = req.files.map(image => ({ url: image.path, fileName: image.filename }));
+  camp.images.push(...images);
+  
+   
+
+  await camp.save();
+
+  if(req.body.deleteImages){
+    const { deleteImages } = req.body;
+
+    // Running multiple query in parallel.
+    await Promise.all(deleteImages.map(filename => (cloudinary.uploader.destroy(filename))))
+     // Pull from the images array where the fileName matches with any of the fileName in deleteImages array.
+    await camp.updateOne({ $pull: { images: { fileName: { $in: deleteImages } } } });
+  }
 
   req.flash("success", "Changes saved successfully.");
 

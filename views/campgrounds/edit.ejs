@@ -3,7 +3,7 @@
 <div class="row">
     <h1 class="text-center">Edit Campground</h1>
     <div class="col-6 offset-3">
-        <form class="needs-validation" action="/campgrounds/<%= camp._id %>?_method=PUT" method="POST" novalidate>
+        <form class="needs-validation" action="/campgrounds/<%= camp._id %>?_method=PUT" method="POST" enctype="multipart/form-data" novalidate>
             <div class="mb-2">
                 <label class="form-label" for="title">Title</label>
                 <input class="form-control" value="<%= camp.title %> " type="text" name="campground[title]" id="title" required>
@@ -41,14 +41,8 @@
                 </div>
             </div>
             <div class="mb-2">
-                <label class="form-label" for="image">Image URL</label>
-                <input class="form-control" value="<%= camp.image%> " type="text" name="campground[image]" id="image" required>
-                <div class="invalid-feedback">
-                    Image URL is required!
-                </div>
-                <div class="valid-feedback">
-                    Looks Good!
-                </div>
+                <label for="formFile" class="form-label">Add images</label>
+                <input class="form-control" type="file" id="formFile" name="image" multiple>
             </div>
             <div class="mb-2">
                 <label class="form-label" for="description">Description</label>
@@ -62,6 +56,15 @@
                     Looks Good!
                 </div>
             </div>
+            <% camp.images.forEach((image, index) => { %> 
+                <div class="mb-2">
+                    <img src="<%= image.thumbnail %> " class="img-thumbnail">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" role="switch" name="deleteImages[]" id="image-<%= index %>" value="<%= image.fileName %> ">
+                        <label class="form-check-label text-danger" for="image-<%= index %>"> Delete ?</label>
+                    </div>
+                </div>
+            <% }) %> 
             <button class="btn btn-success" style="margin-top: 1rem;" type="submit">Make it so</button>
         </form>
         <a href="/campgrounds/<%= camp._id %> " class="btn btn-primary" style="margin-top: 1rem;" type="submit">Go back🔙</a>
