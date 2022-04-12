@@ -11,7 +11,6 @@ const flash = require("connect-flash");
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
 
-
 /**
  * Authentication Imports
  */
