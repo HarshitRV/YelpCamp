@@ -56,5 +56,5 @@ const seedDB = async ()=> {
     }
 }
 
-seedDB();
-// deleteDB();
+// seedDB();
+deleteDB();

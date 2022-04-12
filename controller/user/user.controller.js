@@ -19,11 +19,12 @@ module.exports.registerUser = async (req, res, next) => {
             email,
             username,
             password
-        } = req.body.user;
+        } = req.body;
         const user = new User({
             email,
             username
         });
+      
         const registeredUser = await User.register(user, password);
 
         /**

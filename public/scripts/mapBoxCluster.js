@@ -6,8 +6,6 @@ const map = new mapboxgl.Map({
     zoom: 3
 });
 
-console.log(campgrounds)
-
 map.on('load', () => {
     // Add a new source from our GeoJSON data and
     // set the 'cluster' option to true. GL-JS will

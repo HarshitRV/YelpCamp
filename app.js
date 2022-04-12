@@ -9,6 +9,8 @@ const ejsMate = require("ejs-mate");
 const morgan = require("morgan");
 const flash = require("connect-flash");
 const mongoSanitize = require('express-mongo-sanitize');
+const helmet = require('helmet');
+
 
 /**
  * Authentication Imports
@@ -21,7 +23,7 @@ const LocalStrategy = require("passport-local");
  * Utils imports.
  */
 const AppError = require("./utils/AppError");
-const { sessionConfig } = require('./configs/config');
+const { sessionConfig, SECRETS } = require('./configs/config');
 const connectDB = require("./utils/connectDB");
 
 /**
@@ -52,8 +54,18 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.use(session(sessionConfig));
-app.use(flash())
+app.use(flash());
 app.use(morgan("dev"));
+
+/**
+ * Security middlewares.
+ */
+app.use(
+  helmet({
+    contentSecurityPolicy: false,
+    crossOriginEmbedderPolicy: false,
+  })
+);
 app.use(
   mongoSanitize({
     onSanitize: ({ req, key }) => {
@@ -108,7 +120,7 @@ app.use((err, req, res, next) => {
  */
 const startServer = async () => {
   try{
-    await connectDB();
+    await connectDB(SECRETS.MONGODB_CONNECTION_STRING);
     app.listen(PORT, () => {
       console.log(`Serving on port ${PORT}`);
     });

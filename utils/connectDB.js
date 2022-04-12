@@ -1,6 +1,6 @@
 const mongoose = require("mongoose")
 
-const connectDB = (url="mongodb://localhost:27017/yelp-camp") => {
+const connectDB = (url="") => {
     return mongoose.connect(url, {
         useNewUrlParser: true,
         useUnifiedTopology: true,

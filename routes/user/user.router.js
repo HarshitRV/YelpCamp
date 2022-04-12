@@ -12,11 +12,6 @@ const passport = require("passport")
 const catchAsync = require("../../utils/catchAsync")
 
 /**
- * Model imports
- */
-const User = require("../../models/user")
-
-/**
  * Router imports.
  */
 const router = Router();
