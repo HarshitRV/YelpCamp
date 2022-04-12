@@ -11,7 +11,7 @@ module.exports.sessionConfig = {
         maxAge   : 1000 * 60 * 60 * 24 * 7,
     },
     store: MongoStore.create({
-        mongoUrl: process.env.MONGODB_LOCAL,
+        mongoUrl: process.env.MONGODB_CONNECTION_STRING,
         touchAfter: 24 * 60 * 60
     })
 }
