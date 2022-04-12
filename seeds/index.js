@@ -3,6 +3,12 @@ const Campground = require('../models/campground')
 const cities = require('./cities');
 const { places, descriptors } = require('./seedHelpers');
 
+/**
+ * Geocoder
+ */
+// const mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding");
+// const geocoder = mbxGeocoding({ accessToken: 'pk.eyJ1IjoiaGFyc2hpdHJ2IiwiYSI6ImNsMXV1NXN0MDAyOTAza3IxYXl3MmRnM2QifQ.K6V6gArt4TpYJyxBiyxZ7g' });
+
 mongoose.connect("mongodb://localhost:27017/yelp-camp", {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -21,14 +27,24 @@ const deleteDB = async ()=> {
 }
 
 const seedDB = async ()=> {
+
+    // const geoData = await geocoder.forwardGeocode({
+    //     query: 'Ansley, Nebraskaa',
+    //     limit: 1
+    // }).send();
     
     for (let i=0; i<30; i++){
-        const randomNum = Math.trunc(Math.random() * 1000);
         const price = Math.trunc(Math.random() * 20) + 10;
+        const randomCity = randomSample(cities);
+
         const camp = new Campground({
             author: "624feb0d000ec6ab278902fc",
             title: `${randomSample(descriptors)} ${randomSample(places)}`,
-            location: `${cities[randomNum].city}, ${cities[randomNum].state}`,
+            location: `${randomCity.city}, ${randomCity.state}`,
+            geometry: {
+                type: "Point",
+                coordinates: [randomCity.longitude, randomCity.latitude]
+            },
             images: [{
                 url: 'https://i.imgur.com/DiVMspC.jpeg',
                 fileName: ''

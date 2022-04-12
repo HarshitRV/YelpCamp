@@ -12,5 +12,6 @@ module.exports.sessionConfig = {
 module.exports.SECRETS = {
     CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME,
     CLOUDINARY_KEY: process.env.CLOUDINARY_KEY,
-    CLOUDINAY_SECRET: process.env.CLOUDINAY_SECRET
+    CLOUDINAY_SECRET: process.env.CLOUDINAY_SECRET,
+    MAPBOX_TOKEN: process.env.MAPBOX_TOKEN
 }
