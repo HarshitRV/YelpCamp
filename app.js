@@ -8,6 +8,7 @@ const path = require("path");
 const ejsMate = require("ejs-mate");
 const morgan = require("morgan");
 const flash = require("connect-flash");
+const mongoSanitize = require('express-mongo-sanitize');
 
 /**
  * Authentication Imports
@@ -53,6 +54,13 @@ app.use(methodOverride("_method"));
 app.use(session(sessionConfig));
 app.use(flash())
 app.use(morgan("dev"));
+app.use(
+  mongoSanitize({
+    onSanitize: ({ req, key }) => {
+      console.warn(`This request[${key}] is sanitized`, req);
+    },
+  }),
+);
 
 /**
  * app.session should be used before

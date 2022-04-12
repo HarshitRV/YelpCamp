@@ -4,7 +4,7 @@ const coordinateArray = coordinates.split(',').map(item => Number(item));
 
 const map = new mapboxgl.Map({
     container: 'map', // container ID
-    style: 'mapbox://styles/mapbox/streets-v11', // style URL
+    style: 'mapbox://styles/mapbox/dark-v10', // style URL
     center: coordinateArray, // starting position [lng, lat]
     zoom: 9 // starting zoom
 });
@@ -18,3 +18,5 @@ new mapboxgl.Marker()
             )
     )
     .addTo(map)
+
+map.addControl(new mapboxgl.NavigationControl());
