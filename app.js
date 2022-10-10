@@ -93,6 +93,15 @@ app.use((req, res, next)=>{
 })
 
 /**
+ * Server status Route
+ */
+app.route("/status").get((req, res)=>{
+  return res.status(200).send({
+    message: "Server is running."
+  })
+});
+
+/**
  * Routing middlewares
  */
 app.use('/campgrounds', CampRouter);

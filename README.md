@@ -2,7 +2,7 @@
 A simple Yelp type website which let's you review camping cites
 let's you add camp site you visted.
 
-# [Visit The Site](https://campsites-review.herokuapp.com/)
+# [Visit The Site](https://campsite-review.up.railway.app/campgrounds)
 
 # Running the app locally
 ## Setting up local environment
